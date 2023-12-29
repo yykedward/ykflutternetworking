@@ -4,30 +4,15 @@ library yknetworking;
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:yknetworking/yknetworkingconfig.dart';
+import 'package:yknetworking/yknetworkingResponse.dart';
+import 'package:yknetworking/yknetworkingRequest.dart';
+
 export 'package:yknetworking/yknetworkingconfig.dart';
+export 'package:yknetworking/yknetworkingResponse.dart';
+export 'package:yknetworking/yknetworkingRequest.dart';
 
 
-enum YKNetworkingMethod {
-  get,
-  post,
-  put,
-}
 
-class YKNetworkingResponse {
-
-  dynamic? data;
-
-  YKNetworkingResponse({this.data});
-}
-
-class YKNetworkingRequest {
-
-  final String baseUrl;
-  final String path;
-  final String method;
-
-  YKNetworkingRequest({this.baseUrl = "", this.path = "",this.method = "GET"});
-}
 
 class YKNetworking {
 
