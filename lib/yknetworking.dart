@@ -17,7 +17,7 @@ export 'package:yknetworking/yknetworkingRequest.dart';
 class YKNetworking {
 
   late Dio _dio;
-  Exception? Function(YKNetworkingResponse response)? handleData;
+  Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
 
 
   Map<String, dynamic>? Function(YKNetworkingRequest request)? dynamicHeader; //每次请求都会动态添加到头部中
@@ -112,7 +112,7 @@ class YKNetworking {
       }
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (handleData != null) {
-        var result = handleData!(resp);
+        var result = handleData!(_request,resp);
 
         if (result == null) {
           return resp;
@@ -185,7 +185,7 @@ class YKNetworking {
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (handleData != null) {
-        var result = handleData!(resp);
+        var result = handleData!(_request,resp);
 
         if (result == null) {
           return resp;
@@ -237,7 +237,7 @@ class YKNetworking {
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (handleData != null) {
-        var result = handleData!(resp);
+        var result = handleData!(_request,resp);
 
         if (result == null) {
           return resp;
