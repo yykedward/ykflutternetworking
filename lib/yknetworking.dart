@@ -60,20 +60,27 @@ class YKNetworking {
         Map<String, dynamic>? header,
       }) async {
 
-    YKNetworkingRequest request = _getRequest(method, path, commonHeader, header);
+    return await YKBaseNetworking.request(_getRequest(method, path, commonHeader, header));
+  }
 
-    var result = YKBaseNetworking.request(request);
+  Future<YKNetworkingResponse> upload(String path,
+      {
+        Map<String, dynamic>? params,
+        Map<String, dynamic>? header,
+      }) async {
 
-    result.catchError((err) {
-      debugPrint("inseit err:${err}");
-    });
+    YKNetworkingRequest request = _getRequest(YKNetworkingMethod.post, path, commonHeader, header);
 
-    return result;
+    return await YKBaseNetworking.upload(request);
   }
 
 
-
-  YKNetworkingRequest _getRequest(YKNetworkingMethod method,String path,Map<String, dynamic>? header,Map<String, dynamic>? params) {
+  YKNetworkingRequest _getRequest(
+      YKNetworkingMethod method,
+      String path,
+      Map<String, dynamic>?
+      header,Map<String, dynamic>? params)
+  {
 
 
     YKNetworkingRequest _request = YKNetworkingRequest(

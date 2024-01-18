@@ -17,15 +17,25 @@ class YKBaseNetworking {
     ));
 
     try {
-      Response? response;
+      Response? response = null;
       if (request.method == YKNetworkingMethod.get) {
-        response = await dio.get(request.path, queryParameters: request.params, options: Options(headers: request.commheader));
+        response = await dio.get(
+          request.path,
+          queryParameters: request.params,
+          options: Options(headers: request.commheader)
+        );
       } else if (request.method == YKNetworkingMethod.post) {
-        response = await dio.post(request.path, queryParameters: request.params, options: Options(headers: request.commheader));
+        response = await dio.post(
+          request.path,
+          queryParameters: request.params,
+          options: Options(headers: request.commheader)
+        );
       } else if (request.method == YKNetworkingMethod.put) {
-        response = await dio.put(request.path, queryParameters: request.params, options: Options(headers: request.commheader));
-      } else {
-        response = null;
+        response = await dio.put(
+          request.path,
+          queryParameters: request.params,
+          options: Options(headers: request.commheader)
+        );
       }
 
       if (response == null) {
@@ -53,5 +63,12 @@ class YKBaseNetworking {
       }
       return resp;
     }
+  }
+
+  static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
+
+    YKNetworkingResponse resp = YKNetworkingResponse(data: null);
+
+    return resp;
   }
 }
