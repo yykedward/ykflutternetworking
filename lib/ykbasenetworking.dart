@@ -1,6 +1,7 @@
 library yknetworking;
 
 import 'package:dio/dio.dart';
+import 'dart:typed_data';
 import 'package:yknetworking/yknetworkingconfig.dart';
 import 'package:yknetworking/yknetworkingRequest.dart';
 import 'package:yknetworking/yknetworkingResponse.dart';
@@ -67,8 +68,58 @@ class YKBaseNetworking {
 
   static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
 
-    YKNetworkingResponse resp = YKNetworkingResponse(data: null);
+    Dio dio = Dio(BaseOptions(
+        baseUrl: request.baseUrl,
+        connectTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
+        receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout)
+    ));
 
-    return resp;
+    try {
+
+
+
+      Response? response = null;
+
+      if (request.fileLocalPath != null) {
+        response = await dio.post(
+            request.path,
+            data: FormData.fromMap({
+              request.formName: await MultipartFile.fromFile(request.fileLocalPath!, filename: request.fileName)
+            }),
+            queryParameters: request.params,
+            options: Options(headers: request.commheader)
+        );
+      } else {
+        throw Exception(["无上传数据"]);
+      }
+
+      if (response == null) {
+        throw Exception(["请求错误"]);
+      }
+      YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
+      if (request.handleData != null) {
+        var result = request.handleData!(request,resp);
+
+        if (result != null) {
+          throw result!;
+        }
+      }
+      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request,null);
+      }
+      return resp;
+
+    } on Exception catch (e) {
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null);
+      if (request.errorCallBack != null) {
+        request.errorCallBack!(request, e);
+      }
+      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request,e);
+      }
+      return resp;
+    }
+
+
   }
 }

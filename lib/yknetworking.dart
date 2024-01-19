@@ -63,15 +63,26 @@ class YKNetworking {
     return await YKBaseNetworking.request(_getRequest(method, path, commonHeader, header));
   }
 
-  Future<YKNetworkingResponse> upload(String path,
+  Future<YKNetworkingResponse> upload(
+      String path,
+      String? fileLocalPath,
+      String fileName,
+      String fileMiniType,
+      String formName,
       {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
       }) async {
 
-    YKNetworkingRequest request = _getRequest(YKNetworkingMethod.post, path, commonHeader, header);
-
-    return await YKBaseNetworking.upload(request);
+    return await YKBaseNetworking.upload(_uploadRequet(
+      path,
+      fileLocalPath,
+      fileName,
+      fileMiniType,
+      formName,
+      params: params,
+      header: header
+    ));
   }
 
 
@@ -81,8 +92,6 @@ class YKNetworking {
       Map<String, dynamic>?
       header,Map<String, dynamic>? params)
   {
-
-
     YKNetworkingRequest _request = YKNetworkingRequest(
         baseUrl: "$_baseUrl",
         path: path,
@@ -124,5 +133,24 @@ class YKNetworking {
     return _request;
   }
 
+  YKNetworkingRequest _uploadRequet(
+      String path,
+      String? fileLocalPath,
+      String fileName,
+      String fileMiniType,
+      String formName,
+      {
+        Map<String, dynamic>? params,
+        Map<String, dynamic>? header,
+      }) {
+    YKNetworkingRequest _request = _getRequest(
+        YKNetworkingMethod.post,
+        path,
+        header,
+        params);
+    _request.upload(fileLocalPath, fileName, fileMiniType, formName);
+
+    return _request;
+  }
 
 }
