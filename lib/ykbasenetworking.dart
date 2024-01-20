@@ -10,6 +10,7 @@ class YKBaseNetworking {
 
   static Future<YKNetworkingResponse> request(YKNetworkingRequest request) async {
 
+    // TODO: 改成ListView.builder
 
     Dio dio = Dio(BaseOptions(
         baseUrl: request.baseUrl,
@@ -55,7 +56,7 @@ class YKBaseNetworking {
       }
       return resp;
     } on Exception catch (e) {
-      YKNetworkingResponse resp = YKNetworkingResponse(data: null);
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: e);
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, e);
       }
@@ -110,7 +111,7 @@ class YKBaseNetworking {
       return resp;
 
     } on Exception catch (e) {
-      YKNetworkingResponse resp = YKNetworkingResponse(data: null);
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: e);
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, e);
       }

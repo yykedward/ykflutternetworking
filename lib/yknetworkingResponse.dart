@@ -4,5 +4,7 @@ class YKNetworkingResponse {
 
   dynamic? data;
 
-  YKNetworkingResponse({this.data});
+  Exception? exception;
+
+  YKNetworkingResponse({this.data, this.exception = null});
 }
