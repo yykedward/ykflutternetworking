@@ -22,21 +22,36 @@ class YKBaseNetworking {
       Response? response = null;
       if (request.method == YKNetworkingMethod.get) {
         response = await dio.get(
-          request.path,
-          queryParameters: request.params,
-          options: Options(headers: request.commheader)
+            request.path,
+            queryParameters: request.params,
+            options: Options(headers: request.commheader),
+            onReceiveProgress: (count,total) {
+              if (request.progressCallBack != null) {
+                request.progressCallBack!(count,total);
+              }
+            }
         );
       } else if (request.method == YKNetworkingMethod.post) {
         response = await dio.post(
-          request.path,
-          queryParameters: request.params,
-          options: Options(headers: request.commheader)
+            request.path,
+            queryParameters: request.params,
+            options: Options(headers: request.commheader),
+            onReceiveProgress: (count,total) {
+              if (request.progressCallBack != null) {
+                request.progressCallBack!(count,total);
+              }
+            }
         );
       } else if (request.method == YKNetworkingMethod.put) {
         response = await dio.put(
-          request.path,
-          queryParameters: request.params,
-          options: Options(headers: request.commheader)
+            request.path,
+            queryParameters: request.params,
+            options: Options(headers: request.commheader),
+            onSendProgress: (count,total) {
+              if (request.progressCallBack != null) {
+                request.progressCallBack!(count,total);
+              }
+            }
         );
       }
 
@@ -56,12 +71,17 @@ class YKBaseNetworking {
       }
       return resp;
     } on Exception catch (e) {
-      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: e);
+      Exception newE = e;
+      if (e is DioException) {
+        newE = Exception([e.response]);
+      }
+
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: newE);
       if (request.errorCallBack != null) {
-        request.errorCallBack!(request, e);
+        request.errorCallBack!(request, newE);
       }
       if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,e);
+        YKNetworkingConfig.getInstance().cacheRequest!(request,newE);
       }
       return resp;
     }
@@ -77,8 +97,6 @@ class YKBaseNetworking {
 
     try {
 
-
-
       Response? response = null;
 
       if (request.fileLocalPath != null) {
@@ -88,7 +106,12 @@ class YKBaseNetworking {
               request.formName: await MultipartFile.fromFile(request.fileLocalPath!, filename: request.fileName)
             }),
             queryParameters: request.params,
-            options: Options(headers: request.commheader)
+            options: Options(headers: request.commheader),
+            onSendProgress: (count, total) {
+              if (request.progressCallBack != null) {
+                request.progressCallBack!(count,total);
+              }
+            },
         );
       } else {
         throw Exception(["无上传数据"]);
@@ -111,12 +134,16 @@ class YKBaseNetworking {
       return resp;
 
     } on Exception catch (e) {
-      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: e);
+      Exception newE = e;
+      if (e is DioException) {
+        newE = Exception([e.response]);
+      }
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: newE);
       if (request.errorCallBack != null) {
-        request.errorCallBack!(request, e);
+        request.errorCallBack!(request, newE);
       }
       if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,e);
+        YKNetworkingConfig.getInstance().cacheRequest!(request,newE);
       }
       return resp;
     }

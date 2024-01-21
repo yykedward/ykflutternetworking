@@ -40,6 +40,7 @@ class YKNetworkingRequest {
   Map<String, dynamic>? params;
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
   Function(YKNetworkingRequest request, Exception ex)? errorCallBack;
+  Function(int count, int total)? progressCallBack;
 
   YKNetworkingRequest({
     this.baseUrl = "",
@@ -48,7 +49,8 @@ class YKNetworkingRequest {
     this.commheader = null,
     this.params = null,
     this.handleData = null,
-    this.errorCallBack = null
+    this.errorCallBack = null,
+    this.progressCallBack = null,
   });
 
   upload(
