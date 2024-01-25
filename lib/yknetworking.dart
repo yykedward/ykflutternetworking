@@ -90,6 +90,20 @@ class YKNetworking {
     ));
   }
 
+  Future<YKNetworkingResponse> download(
+      String path,
+      String? downloadPath,
+      {
+        Map<String, dynamic>? params,
+        Map<String, dynamic>? header,
+        Function(int count,int total)? progressCallBack,
+      }) async {
+    return await YKBaseNetworking.download(_downloadRequest(path, downloadPath,
+      params: params,
+      header: header,
+      progressCallBack: progressCallBack
+    ));
+  }
 
   YKNetworkingRequest _getRequest(
       YKNetworkingMethod method,
@@ -160,6 +174,26 @@ class YKNetworking {
       progressCallBack
     );
     _request.upload(fileLocalPath, fileName, fileMiniType, formName);
+
+    return _request;
+  }
+
+  YKNetworkingRequest _downloadRequest(
+      String path,
+      String? downloadPath,
+      {
+        Map<String, dynamic>? params,
+        Map<String, dynamic>? header,
+        Function(int count,int total)? progressCallBack,
+      }) {
+    YKNetworkingRequest _request = _getRequest(
+        YKNetworkingMethod.get,
+        path,
+        header,
+        params,
+        progressCallBack
+    );
+    _request.download(downloadPath);
 
     return _request;
   }

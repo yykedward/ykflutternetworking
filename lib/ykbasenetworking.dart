@@ -8,9 +8,8 @@ import 'package:yknetworking/yknetworkingResponse.dart';
 
 class YKBaseNetworking {
 
+  //MARK: 请求
   static Future<YKNetworkingResponse> request(YKNetworkingRequest request) async {
-
-    // TODO: 改成ListView.builder
 
     Dio dio = Dio(BaseOptions(
         baseUrl: request.baseUrl,
@@ -87,6 +86,7 @@ class YKBaseNetworking {
     }
   }
 
+  //MARK: 上传
   static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
 
     Dio dio = Dio(BaseOptions(
@@ -149,5 +149,70 @@ class YKBaseNetworking {
     }
 
 
+  }
+
+  //MARK: 下载
+  static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
+    Dio dio = Dio(BaseOptions(
+        baseUrl: request.baseUrl,
+        connectTimeout: Duration(seconds: YKNetworkingConfig
+            .getInstance()
+            .timeOut),
+        receiveTimeout: Duration(seconds: YKNetworkingConfig
+            .getInstance()
+            .receiveTimeout)
+    ));
+
+    try {
+      Response? response = null;
+
+      if (request.downloadPath != null) {
+
+        response = await dio.download(
+          request.path,
+          request.downloadPath!,
+          queryParameters: request.params,
+          options: Options(headers: request.commheader),
+          onReceiveProgress: (count, total) {
+            if (request.progressCallBack != null) {
+              request.progressCallBack!(count,total);
+            }
+          }
+        );
+
+      } else {
+        throw Exception(["无下载处理方式"]);
+      }
+
+      if (response == null) {
+        throw Exception(["请求错误"]);
+      }
+      YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
+      if (request.handleData != null) {
+        var result = request.handleData!(request,resp);
+
+        if (result != null) {
+          throw result!;
+        }
+      }
+      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request,null);
+      }
+      return resp;
+
+    } on Exception catch (e) {
+      Exception newE = e;
+      if (e is DioException) {
+        newE = Exception([e.response]);
+      }
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: newE);
+      if (request.errorCallBack != null) {
+        request.errorCallBack!(request, newE);
+      }
+      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request,newE);
+      }
+      return resp;
+    }
   }
 }

@@ -17,12 +17,14 @@ class YKNetworkingRequest {
   final String path;
   final YKNetworkingMethod method;
 
+  //===upload
   String? fileLocalPath;
   String fileName = "";
   String fileMiniType = "";
   String formName = "";
 
-  bool _isUpload = false;
+  //===download
+  String? downloadPath;
 
   String methodStr() {
     var methodStr = "GET";
@@ -63,6 +65,11 @@ class YKNetworkingRequest {
     this.fileName = fileName;
     this.fileMiniType = fileMiniType;
     this.formName = formName;
-    this._isUpload = true;
+  }
+
+  download(
+      String? downoadPath
+      ) {
+    this.downloadPath = downloadPath;
   }
 }
