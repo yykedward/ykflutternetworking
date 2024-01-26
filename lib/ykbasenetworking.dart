@@ -154,7 +154,6 @@ class YKBaseNetworking {
   //MARK: 下载
   static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
     Dio dio = Dio(BaseOptions(
-        baseUrl: request.baseUrl,
         connectTimeout: Duration(seconds: YKNetworkingConfig
             .getInstance()
             .timeOut),

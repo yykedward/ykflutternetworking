@@ -70,6 +70,6 @@ class YKNetworkingRequest {
   download(
       String? downoadPath
       ) {
-    this.downloadPath = downloadPath;
+    this.downloadPath = downoadPath;
   }
 }
