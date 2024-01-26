@@ -6,5 +6,5 @@ class YKNetworkingResponse {
 
   Exception? exception;
 
-  YKNetworkingResponse({this.data, this.exception = null});
+  YKNetworkingResponse({this.data = null, this.exception = null});
 }

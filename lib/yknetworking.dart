@@ -1,8 +1,5 @@
 library yknetworking;
 
-import 'package:flutter/foundation.dart';
-
-import 'dart:io';
 import 'package:yknetworking/yknetworkingconfig.dart';
 import 'package:yknetworking/yknetworkingResponse.dart';
 import 'package:yknetworking/yknetworkingRequest.dart';
@@ -32,7 +29,7 @@ class YKNetworking {
 
     String url = YKNetworkingConfig.getInstance().baseUrl;
     if (baseUrl != null) {
-      url = baseUrl!;
+      url = baseUrl;
     }
     _baseUrl = url;
   }
@@ -127,12 +124,12 @@ class YKNetworking {
       commheader.addAll(commonHeader!);
     }
     if (header != null) {
-      commheader.addAll(header!);
+      commheader.addAll(header);
     }
     if (dynamicHeader != null) {
       var dHeader = dynamicHeader!(_request);
       if (dHeader != null) {
-        commheader.addAll(dHeader!);
+        commheader.addAll(dHeader);
       }
     }
 
@@ -141,12 +138,12 @@ class YKNetworking {
       commParams.addAll(commonParams!);
     }
     if (params != null) {
-      commParams.addAll(params!);
+      commParams.addAll(params);
     }
     if (dynamicParams != null) {
       var dParams = dynamicParams!(_request);
       if (dParams != null) {
-        commParams.addAll(dParams!);
+        commParams.addAll(dParams);
       }
     }
     _request.commheader = commheader;

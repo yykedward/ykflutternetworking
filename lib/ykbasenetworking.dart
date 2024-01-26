@@ -1,7 +1,6 @@
 library yknetworking;
 
 import 'package:dio/dio.dart';
-import 'dart:typed_data';
 import 'package:yknetworking/yknetworkingconfig.dart';
 import 'package:yknetworking/yknetworkingRequest.dart';
 import 'package:yknetworking/yknetworkingResponse.dart';
@@ -62,7 +61,7 @@ class YKBaseNetworking {
         var result = request.handleData!(request,resp);
 
         if (result != null) {
-          throw result!;
+          throw result;
         }
       }
       if (YKNetworkingConfig.getInstance().cacheRequest != null) {
@@ -117,15 +116,12 @@ class YKBaseNetworking {
         throw Exception(["无上传数据"]);
       }
 
-      if (response == null) {
-        throw Exception(["请求错误"]);
-      }
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (request.handleData != null) {
         var result = request.handleData!(request,resp);
 
         if (result != null) {
-          throw result!;
+          throw result;
         }
       }
       if (YKNetworkingConfig.getInstance().cacheRequest != null) {
@@ -183,15 +179,12 @@ class YKBaseNetworking {
         throw Exception(["无下载处理方式"]);
       }
 
-      if (response == null) {
-        throw Exception(["请求错误"]);
-      }
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (request.handleData != null) {
         var result = request.handleData!(request,resp);
 
         if (result != null) {
-          throw result!;
+          throw result;
         }
       }
       if (YKNetworkingConfig.getInstance().cacheRequest != null) {

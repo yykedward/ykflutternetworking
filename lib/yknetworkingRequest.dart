@@ -1,7 +1,6 @@
 library yknetworking;
 
 import 'package:yknetworking/yknetworkingResponse.dart';
-import 'dart:typed_data';
 
 enum YKNetworkingMethod {
   get,
