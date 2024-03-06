@@ -10,11 +10,8 @@ class YKBaseNetworking {
   //MARK: 请求
   static Future<YKNetworkingResponse> request(YKNetworkingRequest request) async {
 
-    Dio dio = Dio(BaseOptions(
-        baseUrl: request.baseUrl,
-        connectTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-        receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout)
-    ));
+    Dio dio = YKNetworkingConfig.getInstance().getDio();
+    dio.options.baseUrl = request.baseUrl;
 
     try {
       Response? response = null;
@@ -22,7 +19,11 @@ class YKBaseNetworking {
         response = await dio.get(
             request.path,
             queryParameters: request.params,
-            options: Options(headers: request.commheader),
+            options: Options(
+                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+                headers: request.commheader
+            ),
             onReceiveProgress: (count,total) {
               if (request.progressCallBack != null) {
                 request.progressCallBack!(count,total);
@@ -33,7 +34,11 @@ class YKBaseNetworking {
         response = await dio.post(
             request.path,
             queryParameters: request.params,
-            options: Options(headers: request.commheader),
+            options: Options(
+                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+                headers: request.commheader
+            ),
             onReceiveProgress: (count,total) {
               if (request.progressCallBack != null) {
                 request.progressCallBack!(count,total);
@@ -44,7 +49,11 @@ class YKBaseNetworking {
         response = await dio.put(
             request.path,
             queryParameters: request.params,
-            options: Options(headers: request.commheader),
+            options: Options(
+                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+                headers: request.commheader
+            ),
             onSendProgress: (count,total) {
               if (request.progressCallBack != null) {
                 request.progressCallBack!(count,total);
@@ -70,9 +79,6 @@ class YKBaseNetworking {
       return resp;
     } on Exception catch (e) {
       Exception newE = e;
-      if (e is DioException) {
-        newE = Exception([e.response]);
-      }
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: newE);
       if (request.errorCallBack != null) {
@@ -88,11 +94,7 @@ class YKBaseNetworking {
   //MARK: 上传
   static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
 
-    Dio dio = Dio(BaseOptions(
-        baseUrl: request.baseUrl,
-        connectTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-        receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout)
-    ));
+    Dio dio = YKNetworkingConfig.getInstance().getDio();
 
     try {
 
@@ -105,7 +107,11 @@ class YKBaseNetworking {
               request.formName: await MultipartFile.fromFile(request.fileLocalPath!, filename: request.fileName)
             }),
             queryParameters: request.params,
-            options: Options(headers: request.commheader),
+            options: Options(
+                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+                headers: request.commheader
+            ),
             onSendProgress: (count, total) {
               if (request.progressCallBack != null) {
                 request.progressCallBack!(count,total);
@@ -131,9 +137,7 @@ class YKBaseNetworking {
 
     } on Exception catch (e) {
       Exception newE = e;
-      if (e is DioException) {
-        newE = Exception([e.response]);
-      }
+
       YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: newE);
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
@@ -149,15 +153,8 @@ class YKBaseNetworking {
 
   //MARK: 下载
   static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
-    Dio dio = Dio(BaseOptions(
-        connectTimeout: Duration(seconds: YKNetworkingConfig
-            .getInstance()
-            .timeOut),
-        receiveTimeout: Duration(seconds: YKNetworkingConfig
-            .getInstance()
-            .receiveTimeout)
-    ));
-
+    Dio dio = YKNetworkingConfig.getInstance().getDio();
+    dio.options.baseUrl = request.baseUrl;
     try {
       Response? response = null;
 
@@ -167,7 +164,9 @@ class YKBaseNetworking {
           request.path,
           request.downloadPath!,
           queryParameters: request.params,
-          options: Options(headers: request.commheader),
+          options: Options(
+              headers: request.commheader,
+          ),
           onReceiveProgress: (count, total) {
             if (request.progressCallBack != null) {
               request.progressCallBack!(count,total);
@@ -179,7 +178,7 @@ class YKBaseNetworking {
         throw Exception(["无下载处理方式"]);
       }
 
-      YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
+      YKNetworkingResponse resp = YKNetworkingResponse(data: null);
       if (request.handleData != null) {
         var result = request.handleData!(request,resp);
 
@@ -194,9 +193,7 @@ class YKBaseNetworking {
 
     } on Exception catch (e) {
       Exception newE = e;
-      if (e is DioException) {
-        newE = Exception([e.response]);
-      }
+
       YKNetworkingResponse resp = YKNetworkingResponse(data: null, exception: newE);
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
