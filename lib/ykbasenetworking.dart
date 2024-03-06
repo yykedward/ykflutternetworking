@@ -95,7 +95,7 @@ class YKBaseNetworking {
   static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
 
     Dio dio = YKNetworkingConfig.getInstance().getDio();
-
+    dio.options.baseUrl = request.baseUrl;
     try {
 
       Response? response = null;
