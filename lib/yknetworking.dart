@@ -88,14 +88,14 @@ class YKNetworking {
   }
 
   Future<YKNetworkingResponse> download(
-      String path,
+      String url,
       String? downloadPath,
       {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count,int total)? progressCallBack,
       }) async {
-    return await YKBaseNetworking.download(_downloadRequest(path, downloadPath,
+    return await YKBaseNetworking.download(_downloadRequest(url, downloadPath,
       params: params,
       header: header,
       progressCallBack: progressCallBack
@@ -176,7 +176,7 @@ class YKNetworking {
   }
 
   YKNetworkingRequest _downloadRequest(
-      String path,
+      String url,
       String? downloadPath,
       {
         Map<String, dynamic>? params,
@@ -185,7 +185,7 @@ class YKNetworking {
       }) {
     YKNetworkingRequest _request = _getRequest(
         YKNetworkingMethod.get,
-        path,
+        url,
         header,
         params,
         progressCallBack

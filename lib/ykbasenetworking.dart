@@ -10,7 +10,7 @@ class YKBaseNetworking {
   //MARK: 请求
   static Future<YKNetworkingResponse> request(YKNetworkingRequest request) async {
 
-    Dio dio = YKNetworkingConfig.getInstance().getDio();
+    Dio dio = YKNetworkingConfig.getInstance().dio;
     dio.options.baseUrl = request.baseUrl;
 
     try {
@@ -94,7 +94,7 @@ class YKBaseNetworking {
   //MARK: 上传
   static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
 
-    Dio dio = YKNetworkingConfig.getInstance().getDio();
+    Dio dio = YKNetworkingConfig.getInstance().dio;
     dio.options.baseUrl = request.baseUrl;
     try {
 
@@ -153,7 +153,7 @@ class YKBaseNetworking {
 
   //MARK: 下载
   static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
-    Dio dio = YKNetworkingConfig.getInstance().getDio();
+    Dio dio = YKNetworkingConfig.getInstance().dio;
     dio.options.baseUrl = request.baseUrl;
     try {
       Response? response = null;
@@ -161,7 +161,7 @@ class YKBaseNetworking {
       if (request.downloadPath != null) {
 
         response = await dio.download(
-          request.path,
+          request.baseUrl,
           request.downloadPath!,
           queryParameters: request.params,
           options: Options(
@@ -179,16 +179,11 @@ class YKBaseNetworking {
       }
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: null);
-      if (request.handleData != null) {
-        var result = request.handleData!(request,resp);
-
-        if (result != null) {
-          throw result;
-        }
-      }
+      
       if (YKNetworkingConfig.getInstance().cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request,null);
       }
+
       return resp;
 
     } on Exception catch (e) {
