@@ -31,13 +31,20 @@ class YKBaseNetworking {
             }
         );
       } else if (request.method == YKNetworkingMethod.post) {
+
+        FormData formData = FormData.fromMap({});
+        if (request.params != null) {
+          formData == FormData.fromMap(request.params!);
+        }
+
         response = await dio.post(
             request.path,
-            queryParameters: request.params,
+            data: formData,
             options: Options(
-                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
-                headers: request.commheader
+              sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
+              receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+              headers: request.commheader,
+              contentType: Headers.multipartFormDataContentType
             ),
             onReceiveProgress: (count,total) {
               if (request.progressCallBack != null) {
