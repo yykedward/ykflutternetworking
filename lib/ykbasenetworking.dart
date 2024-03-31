@@ -9,8 +9,9 @@ class YKBaseNetworking {
 
   //MARK: 请求
   static Future<YKNetworkingResponse> request(YKNetworkingRequest request) async {
-
-    Dio dio = YKNetworkingConfig.getInstance().dio;
+    Dio dio = YKNetworkingConfig
+        .getInstance()
+        .dio;
     dio.options.baseUrl = request.baseUrl;
 
     try {
@@ -20,35 +21,37 @@ class YKBaseNetworking {
             request.path,
             queryParameters: request.params,
             options: Options(
-                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+                sendTimeout: Duration(seconds: YKNetworkingConfig
+                    .getInstance()
+                    .timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig
+                    .getInstance()
+                    .receiveTimeout),
                 headers: request.commheader
             ),
-            onReceiveProgress: (count,total) {
+            onReceiveProgress: (count, total) {
               if (request.progressCallBack != null) {
-                request.progressCallBack!(count,total);
+                request.progressCallBack!(count, total);
               }
             }
         );
       } else if (request.method == YKNetworkingMethod.post) {
-
-        FormData formData = FormData.fromMap({});
-        if (request.params != null) {
-          formData == FormData.fromMap(request.params!);
-        }
-
         response = await dio.post(
             request.path,
-            data: formData,
+            data: request.params,
             options: Options(
-              sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-              receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
-              headers: request.commheader,
-              contentType: Headers.multipartFormDataContentType
+                sendTimeout: Duration(seconds: YKNetworkingConfig
+                    .getInstance()
+                    .timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig
+                    .getInstance()
+                    .receiveTimeout),
+                headers: request.commheader,
+                contentType: Headers.formUrlEncodedContentType
             ),
-            onReceiveProgress: (count,total) {
+            onReceiveProgress: (count, total) {
               if (request.progressCallBack != null) {
-                request.progressCallBack!(count,total);
+                request.progressCallBack!(count, total);
               }
             }
         );
@@ -57,13 +60,17 @@ class YKBaseNetworking {
             request.path,
             queryParameters: request.params,
             options: Options(
-                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
+                sendTimeout: Duration(seconds: YKNetworkingConfig
+                    .getInstance()
+                    .timeOut),
+                receiveTimeout: Duration(seconds: YKNetworkingConfig
+                    .getInstance()
+                    .receiveTimeout),
                 headers: request.commheader
             ),
-            onSendProgress: (count,total) {
+            onSendProgress: (count, total) {
               if (request.progressCallBack != null) {
-                request.progressCallBack!(count,total);
+                request.progressCallBack!(count, total);
               }
             }
         );
@@ -74,14 +81,16 @@ class YKBaseNetworking {
       }
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (request.handleData != null) {
-        var result = request.handleData!(request,resp);
+        var result = request.handleData!(request, resp);
 
         if (result != null) {
           throw result;
         }
       }
-      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,null);
+      if (YKNetworkingConfig
+          .getInstance()
+          .cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request, null);
       }
       return resp;
     } on Exception catch (e) {
@@ -91,8 +100,10 @@ class YKBaseNetworking {
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
       }
-      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,newE);
+      if (YKNetworkingConfig
+          .getInstance()
+          .cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request, newE);
       }
       return resp;
     }
@@ -100,30 +111,44 @@ class YKBaseNetworking {
 
   //MARK: 上传
   static Future<YKNetworkingResponse> upload(YKNetworkingRequest request) async {
-
-    Dio dio = YKNetworkingConfig.getInstance().dio;
+    Dio dio = YKNetworkingConfig
+        .getInstance()
+        .dio;
     dio.options.baseUrl = request.baseUrl;
     try {
-
       Response? response = null;
+
+      FormData formData = FormData.fromMap({});
+      if (request.params != null) {
+        final params = request.params!;
+        params.addAll({
+          request.formName: await MultipartFile.fromFile(request.fileLocalPath!, filename: request.fileName)
+        });
+        formData = FormData.fromMap(params);
+      } else {
+        formData = FormData.fromMap({
+          request.formName: await MultipartFile.fromFile(request.fileLocalPath!, filename: request.fileName)
+        });
+      }
 
       if (request.fileLocalPath != null) {
         response = await dio.post(
-            request.path,
-            data: FormData.fromMap({
-              request.formName: await MultipartFile.fromFile(request.fileLocalPath!, filename: request.fileName)
-            }),
-            queryParameters: request.params,
-            options: Options(
-                sendTimeout: Duration(seconds: YKNetworkingConfig.getInstance().timeOut),
-                receiveTimeout: Duration(seconds: YKNetworkingConfig.getInstance().receiveTimeout),
-                headers: request.commheader
-            ),
-            onSendProgress: (count, total) {
-              if (request.progressCallBack != null) {
-                request.progressCallBack!(count,total);
-              }
-            },
+          request.path,
+          data: formData,
+          options: Options(
+              sendTimeout: Duration(seconds: YKNetworkingConfig
+                  .getInstance()
+                  .timeOut),
+              receiveTimeout: Duration(seconds: YKNetworkingConfig
+                  .getInstance()
+                  .receiveTimeout),
+              headers: request.commheader
+          ),
+          onSendProgress: (count, total) {
+            if (request.progressCallBack != null) {
+              request.progressCallBack!(count, total);
+            }
+          },
         );
       } else {
         throw Exception(["无上传数据"]);
@@ -131,17 +156,18 @@ class YKBaseNetworking {
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
       if (request.handleData != null) {
-        var result = request.handleData!(request,resp);
+        var result = request.handleData!(request, resp);
 
         if (result != null) {
           throw result;
         }
       }
-      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,null);
+      if (YKNetworkingConfig
+          .getInstance()
+          .cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request, null);
       }
       return resp;
-
     } on Exception catch (e) {
       Exception newE = e;
 
@@ -149,50 +175,52 @@ class YKBaseNetworking {
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
       }
-      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,newE);
+      if (YKNetworkingConfig
+          .getInstance()
+          .cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request, newE);
       }
       return resp;
     }
-
-
   }
 
   //MARK: 下载
   static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
-    Dio dio = YKNetworkingConfig.getInstance().dio;
+    Dio dio = YKNetworkingConfig
+        .getInstance()
+        .dio;
     dio.options.baseUrl = request.baseUrl;
     try {
       Response? response = null;
 
       if (request.downloadPath != null) {
-
         response = await dio.download(
-          request.baseUrl,
-          request.downloadPath!,
-          queryParameters: request.params,
-          options: Options(
-              headers: request.commheader,
-          ),
-          onReceiveProgress: (count, total) {
-            if (request.progressCallBack != null) {
-              request.progressCallBack!(count,total);
+            request.baseUrl,
+            request.downloadPath!,
+            queryParameters: request.params,
+            options: Options(
+                headers: request.commheader,
+                responseType: ResponseType.bytes
+            ),
+            onReceiveProgress: (count, total) {
+              if (request.progressCallBack != null) {
+                request.progressCallBack!(count, total);
+              }
             }
-          }
         );
-
       } else {
         throw Exception(["无下载处理方式"]);
       }
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: null);
-      
-      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,null);
+
+      if (YKNetworkingConfig
+          .getInstance()
+          .cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request, null);
       }
 
       return resp;
-
     } on Exception catch (e) {
       Exception newE = e;
 
@@ -200,8 +228,10 @@ class YKBaseNetworking {
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
       }
-      if (YKNetworkingConfig.getInstance().cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request,newE);
+      if (YKNetworkingConfig
+          .getInstance()
+          .cacheRequest != null) {
+        YKNetworkingConfig.getInstance().cacheRequest!(request, newE);
       }
       return resp;
     }

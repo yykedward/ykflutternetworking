@@ -9,7 +9,6 @@ enum YKNetworkingMethod {
 }
 
 
-
 class YKNetworkingRequest {
 
   final String baseUrl;
@@ -37,6 +36,7 @@ class YKNetworkingRequest {
     }
     return methodStr;
   }
+
   Map<String, dynamic>? commheader;
   Map<String, dynamic>? params;
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
@@ -54,21 +54,17 @@ class YKNetworkingRequest {
     this.progressCallBack = null,
   });
 
-  upload(
-    String? fileLocalPath,
-    String fileName,
-    String fileMiniType,
-    String formName,
-      ) {
+  upload(String? fileLocalPath,
+      String fileName,
+      String fileMiniType,
+      String formName,) {
     this.fileLocalPath = fileLocalPath;
     this.fileName = fileName;
     this.fileMiniType = fileMiniType;
     this.formName = formName;
   }
 
-  download(
-      String? downoadPath
-      ) {
+  download(String? downoadPath) {
     this.downloadPath = downoadPath;
   }
 }

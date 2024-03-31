@@ -12,7 +12,9 @@ class YKNetworkingConfig {
   int _receiveTimeout = 30;
 
   Dio get dio => _dio!;
+
   int get timeOut => _timeOut;
+
   int get receiveTimeout => _receiveTimeout;
   String baseUrl = "";
   Map<String, dynamic> commHeader = {};
@@ -26,8 +28,8 @@ class YKNetworkingConfig {
 
   YKNetworkingConfig._() {
     _dio = Dio(BaseOptions(
-      connectTimeout: Duration(seconds: _timeOut),
-      receiveTimeout: Duration(seconds: _receiveTimeout)
+        connectTimeout: Duration(seconds: _timeOut),
+        receiveTimeout: Duration(seconds: _receiveTimeout)
     ));
   }
 
