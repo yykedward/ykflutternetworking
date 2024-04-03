@@ -186,33 +186,42 @@ class YKBaseNetworking {
 
   //MARK: 下载
   static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
-    Dio dio = YKNetworkingConfig
-        .getInstance()
-        .dio;
-    dio.options.baseUrl = request.baseUrl;
+    Dio dio = Dio();
     try {
       Response? response = null;
 
       if (request.downloadPath != null) {
         response = await dio.download(
-            request.baseUrl,
-            request.downloadPath!,
-            queryParameters: request.params,
-            options: Options(
-                headers: request.commheader,
-                responseType: ResponseType.bytes
-            ),
-            onReceiveProgress: (count, total) {
-              if (request.progressCallBack != null) {
-                request.progressCallBack!(count, total);
-              }
+          request.path,
+          request.downloadPath!,
+          queryParameters: request.params,
+          options: Options(
+            headers: request.commheader,
+            responseType: ResponseType.bytes
+          ),
+          onReceiveProgress: (count, total) {
+            if (request.progressCallBack != null) {
+              request.progressCallBack!(count, total);
             }
+          }
         );
       } else {
-        throw Exception(["无下载处理方式"]);
+        response = await dio.get(
+          request.path,
+          queryParameters: request.params,
+          options: Options(
+            headers: request.commheader,
+            responseType: ResponseType.bytes
+          ),
+          onReceiveProgress: (count, total) {
+            if (request.progressCallBack != null) {
+              request.progressCallBack!(count, total);
+            }
+          }
+        );
       }
 
-      YKNetworkingResponse resp = YKNetworkingResponse(data: null);
+      YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
 
       if (YKNetworkingConfig
           .getInstance()
