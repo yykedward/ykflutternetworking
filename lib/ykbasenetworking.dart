@@ -13,6 +13,8 @@ class YKBaseNetworking {
         .getInstance()
         .dio;
     dio.options.baseUrl = request.baseUrl;
+    dio.options.queryParameters = {};
+    dio.options.headers = {};
 
     try {
       Response? response = null;
@@ -90,7 +92,7 @@ class YKBaseNetworking {
       if (YKNetworkingConfig
           .getInstance()
           .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, null);
+        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
       return resp;
     } on Exception catch (e) {
@@ -103,7 +105,7 @@ class YKBaseNetworking {
       if (YKNetworkingConfig
           .getInstance()
           .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, newE);
+        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
       return resp;
     }
@@ -115,6 +117,8 @@ class YKBaseNetworking {
         .getInstance()
         .dio;
     dio.options.baseUrl = request.baseUrl;
+    dio.options.queryParameters = {};
+    dio.options.headers = {};
     try {
       Response? response = null;
 
@@ -165,7 +169,7 @@ class YKBaseNetworking {
       if (YKNetworkingConfig
           .getInstance()
           .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, null);
+        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
       return resp;
     } on Exception catch (e) {
@@ -178,7 +182,7 @@ class YKBaseNetworking {
       if (YKNetworkingConfig
           .getInstance()
           .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, newE);
+        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
       return resp;
     }
@@ -186,7 +190,12 @@ class YKBaseNetworking {
 
   //MARK: 下载
   static Future<YKNetworkingResponse> download(YKNetworkingRequest request) async {
-    Dio dio = Dio();
+    Dio dio = YKNetworkingConfig
+        .getInstance()
+        .dio;
+    dio.options.baseUrl = request.baseUrl;
+    dio.options.queryParameters = {};
+    dio.options.headers = {};
     try {
       Response? response = null;
 
@@ -226,7 +235,7 @@ class YKBaseNetworking {
       if (YKNetworkingConfig
           .getInstance()
           .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, null);
+        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
 
       return resp;
@@ -240,7 +249,7 @@ class YKBaseNetworking {
       if (YKNetworkingConfig
           .getInstance()
           .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, newE);
+        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
       return resp;
     }

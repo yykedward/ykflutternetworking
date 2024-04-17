@@ -3,6 +3,10 @@
 **Before you upgrade: Breaking changes might happen in major and minor versions of packages.<br/>
 See the [Migration Guide][] for the complete breaking changes list.**
 
+## 0.0.7
+
+- fix path and baseUrl empty bug
+
 ## 0.0.6
 
 - fix download bug

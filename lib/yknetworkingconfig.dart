@@ -1,6 +1,7 @@
 library yknetworking;
 
 import 'package:yknetworking/yknetworkingRequest.dart';
+import 'package:yknetworking/yknetworkingResponse.dart';
 import 'package:dio/dio.dart';
 
 class YKNetworkingConfig {
@@ -19,7 +20,7 @@ class YKNetworkingConfig {
   String baseUrl = "";
   Map<String, dynamic> commHeader = {};
   Map<String, dynamic> commParams = {};
-  Function(YKNetworkingRequest request, Exception? ex)? cacheRequest;
+  void Function(YKNetworkingRequest request, YKNetworkingResponse response)? cacheRequest;
 
   factory YKNetworkingConfig.getInstance() {
     _instance ??= YKNetworkingConfig._();

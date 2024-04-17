@@ -112,9 +112,14 @@ class YKNetworking {
       progressCallBack: progressCallBack,
     );
 
-    Map<String, dynamic> commheader = YKNetworkingConfig
-        .getInstance()
-        .commHeader;
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+      _request.baseUrl = path;
+      _request.path = "";
+    }
+
+    YKNetworkingConfig config = YKNetworkingConfig.getInstance();
+    Map<String, dynamic> commheader = {};
+    commheader.addAll(config.commHeader);
     if (commonHeader != null) {
       commheader.addAll(commonHeader!);
     }
@@ -128,9 +133,8 @@ class YKNetworking {
       }
     }
 
-    Map<String, dynamic> commParams = YKNetworkingConfig
-        .getInstance()
-        .commParams;
+    Map<String, dynamic> commParams = {};
+    commParams.addAll(config.commParams);
     if (commonParams != null) {
       commParams.addAll(commonParams!);
     }

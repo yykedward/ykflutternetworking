@@ -11,8 +11,8 @@ enum YKNetworkingMethod {
 
 class YKNetworkingRequest {
 
-  final String baseUrl;
-  final String path;
+  String baseUrl;
+  String path;
   final YKNetworkingMethod method;
 
   //===upload
