@@ -15,6 +15,9 @@ class YKBaseNetworking {
     dio.options.baseUrl = request.baseUrl;
     dio.options.queryParameters = {};
     dio.options.headers = {};
+    if (request.showloadingCallBack != null && request.showloading) {
+      request.showloadingCallBack!(true);
+    }
 
     try {
       Response? response = null;
@@ -94,6 +97,9 @@ class YKBaseNetworking {
           .cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
+      if (request.showloadingCallBack != null && request.showloading) {
+        request.showloadingCallBack!(false);
+      }
       return resp;
     } on Exception catch (e) {
       Exception newE = e;
@@ -107,6 +113,9 @@ class YKBaseNetworking {
           .cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
+      if (request.showloadingCallBack != null && request.showloading) {
+        request.showloadingCallBack!(false);
+      }
       return resp;
     }
   }
@@ -119,6 +128,9 @@ class YKBaseNetworking {
     dio.options.baseUrl = request.baseUrl;
     dio.options.queryParameters = {};
     dio.options.headers = {};
+    if (request.showloadingCallBack != null && request.showloading) {
+      request.showloadingCallBack!(true);
+    }
     try {
       Response? response = null;
 
@@ -171,6 +183,9 @@ class YKBaseNetworking {
           .cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
+      if (request.showloadingCallBack != null && request.showloading) {
+        request.showloadingCallBack!(false);
+      }
       return resp;
     } on Exception catch (e) {
       Exception newE = e;
@@ -184,6 +199,9 @@ class YKBaseNetworking {
           .cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
+      if (request.showloadingCallBack != null && request.showloading) {
+        request.showloadingCallBack!(false);
+      }
       return resp;
     }
   }
@@ -196,6 +214,9 @@ class YKBaseNetworking {
     dio.options.baseUrl = request.baseUrl;
     dio.options.queryParameters = {};
     dio.options.headers = {};
+    if (request.showloadingCallBack != null && request.showloading) {
+      request.showloadingCallBack!(true);
+    }
     try {
       Response? response = null;
 
@@ -237,7 +258,9 @@ class YKBaseNetworking {
           .cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
       }
-
+      if (request.showloadingCallBack != null && request.showloading) {
+        request.showloadingCallBack!(false);
+      }
       return resp;
     } on Exception catch (e) {
       Exception newE = e;
@@ -250,6 +273,9 @@ class YKBaseNetworking {
           .getInstance()
           .cacheRequest != null) {
         YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
+      }
+      if (request.showloadingCallBack != null && request.showloading) {
+        request.showloadingCallBack!(false);
       }
       return resp;
     }

@@ -42,6 +42,8 @@ class YKNetworkingRequest {
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
   Function(YKNetworkingRequest request, Exception ex)? errorCallBack;
   Function(int count, int total)? progressCallBack;
+  Function(bool show)? showloadingCallBack;
+  bool showloading = false;
 
   YKNetworkingRequest({
     this.baseUrl = "",
@@ -52,6 +54,8 @@ class YKNetworkingRequest {
     this.handleData = null,
     this.errorCallBack = null,
     this.progressCallBack = null,
+    this.showloading = false,
+    this.showloadingCallBack = null,
   });
 
   upload(String? fileLocalPath,
