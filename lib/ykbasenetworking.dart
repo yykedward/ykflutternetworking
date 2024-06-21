@@ -92,11 +92,7 @@ class YKBaseNetworking {
           throw result;
         }
       }
-      if (YKNetworkingConfig
-          .getInstance()
-          .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
-      }
+      YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
       if (request.showloadingCallBack != null && request.showloading) {
         request.showloadingCallBack!(false);
       }
@@ -108,11 +104,7 @@ class YKBaseNetworking {
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
       }
-      if (YKNetworkingConfig
-          .getInstance()
-          .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
-      }
+      YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
       if (request.showloadingCallBack != null && request.showloading) {
         request.showloadingCallBack!(false);
       }
@@ -178,11 +170,7 @@ class YKBaseNetworking {
           throw result;
         }
       }
-      if (YKNetworkingConfig
-          .getInstance()
-          .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
-      }
+      YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
       if (request.showloadingCallBack != null && request.showloading) {
         request.showloadingCallBack!(false);
       }
@@ -194,11 +182,7 @@ class YKBaseNetworking {
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
       }
-      if (YKNetworkingConfig
-          .getInstance()
-          .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
-      }
+      YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
       if (request.showloadingCallBack != null && request.showloading) {
         request.showloadingCallBack!(false);
       }
@@ -253,11 +237,7 @@ class YKBaseNetworking {
 
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
 
-      if (YKNetworkingConfig
-          .getInstance()
-          .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
-      }
+      YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
       if (request.showloadingCallBack != null && request.showloading) {
         request.showloadingCallBack!(false);
       }
@@ -269,11 +249,7 @@ class YKBaseNetworking {
       if (request.errorCallBack != null) {
         request.errorCallBack!(request, newE);
       }
-      if (YKNetworkingConfig
-          .getInstance()
-          .cacheRequest != null) {
-        YKNetworkingConfig.getInstance().cacheRequest!(request, resp);
-      }
+      YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
       if (request.showloadingCallBack != null && request.showloading) {
         request.showloadingCallBack!(false);
       }
