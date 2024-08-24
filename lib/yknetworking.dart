@@ -15,8 +15,8 @@ class YKNetworking {
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
 
 
-  Map<String, dynamic>? Function(YKNetworkingRequest request)? dynamicHeader; //每次请求都会动态添加到头部中
-  Map<String, dynamic>? Function(YKNetworkingRequest request)? dynamicParams; //每次请求都会动态添加到参数中
+  Future<Map<String, dynamic>?> Function(YKNetworkingRequest request)? dynamicHeader; //每次请求都会动态添加到头部中
+  Future<Map<String, dynamic>?> Function(YKNetworkingRequest request)? dynamicParams; //每次请求都会动态添加到参数中
 
   Function(YKNetworkingRequest request, Exception ex)? errorCallBack;
   Map<String, dynamic>? commonHeader;
@@ -62,7 +62,7 @@ class YKNetworking {
         Function(int count, int total)? progressCallBack,
         bool showloading = false,
       }) async {
-    return await YKBaseNetworking.request(_getRequest(method, path, header, params, progressCallBack, showloading: showloading));
+    return await YKBaseNetworking.request(await _getRequest(method, path, header, params, progressCallBack, showloading: showloading));
   }
 
   Future<YKNetworkingResponse> upload(String path,
@@ -76,7 +76,7 @@ class YKNetworking {
         Function(int count, int total)? progressCallBack,
         bool showloading = false,
       }) async {
-    return await YKBaseNetworking.upload(_uploadRequet(
+    return await YKBaseNetworking.upload(await _uploadRequet(
         path,
         fileLocalPath,
         fileName,
@@ -97,7 +97,7 @@ class YKNetworking {
         Function(int count, int total)? progressCallBack,
         bool showloading = false,
       }) async {
-    return await YKBaseNetworking.download(_downloadRequest(url,
+    return await YKBaseNetworking.download(await _downloadRequest(url,
         downloadPath: downloadPath,
         params: params,
         header: header,
@@ -106,7 +106,7 @@ class YKNetworking {
     ));
   }
 
-  YKNetworkingRequest _getRequest(YKNetworkingMethod method,
+  Future<YKNetworkingRequest> _getRequest(YKNetworkingMethod method,
       String path,
       Map<String, dynamic>? header,
       Map<String, dynamic>? params,
@@ -114,7 +114,7 @@ class YKNetworking {
       {
         bool showloading = false,
       }
-      ) {
+      ) async {
     YKNetworkingRequest _request = YKNetworkingRequest(
       baseUrl: "$_baseUrl",
       path: path,
@@ -141,7 +141,7 @@ class YKNetworking {
       commheader.addAll(header);
     }
     if (dynamicHeader != null) {
-      var dHeader = dynamicHeader!(_request);
+      var dHeader = await dynamicHeader!(_request);
       if (dHeader != null) {
         commheader.addAll(dHeader);
       }
@@ -156,7 +156,7 @@ class YKNetworking {
       commParams.addAll(params);
     }
     if (dynamicParams != null) {
-      var dParams = dynamicParams!(_request);
+      var dParams = await dynamicParams!(_request);
       if (dParams != null) {
         commParams.addAll(dParams);
       }
@@ -167,7 +167,7 @@ class YKNetworking {
     return _request;
   }
 
-  YKNetworkingRequest _uploadRequet(String path,
+  Future<YKNetworkingRequest> _uploadRequet(String path,
       String? fileLocalPath,
       String fileName,
       String fileMiniType,
@@ -177,8 +177,8 @@ class YKNetworking {
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
         bool showloading = false,
-      }) {
-    YKNetworkingRequest _request = _getRequest(
+      }) async {
+    YKNetworkingRequest _request = await _getRequest(
       YKNetworkingMethod.post,
       path,
       header,
@@ -191,15 +191,15 @@ class YKNetworking {
     return _request;
   }
 
-  YKNetworkingRequest _downloadRequest(String url,
+  Future<YKNetworkingRequest> _downloadRequest(String url,
       {
         String? downloadPath,
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
         bool showloading = false,
-      }) {
-    YKNetworkingRequest _request = _getRequest(
+      }) async {
+    YKNetworkingRequest _request = await _getRequest(
         YKNetworkingMethod.get,
         url,
         header,
