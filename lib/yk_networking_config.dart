@@ -1,7 +1,7 @@
-library yknetworking;
+library yk_networking;
 
-import 'package:yknetworking/yknetworkingRequest.dart';
-import 'package:yknetworking/yknetworkingResponse.dart';
+import 'package:yk_networking/yk_networking_request.dart';
+import 'package:yk_networking/yk_networking_response.dart';
 import 'package:dio/dio.dart';
 
 class YKNetworkingConfig {

@@ -1,4 +1,4 @@
-library yknetworking;
+library yk_networking;
 
 class YKNetworkingResponse {
 

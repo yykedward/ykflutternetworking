@@ -1,13 +1,13 @@
-library yknetworking;
+library yk_networking;
 
-import 'package:yknetworking/yknetworkingconfig.dart';
-import 'package:yknetworking/yknetworkingResponse.dart';
-import 'package:yknetworking/yknetworkingRequest.dart';
-import 'package:yknetworking/ykbasenetworking.dart';
+import 'package:yk_networking/yk_networking_config.dart';
+import 'package:yk_networking/yk_networking_response.dart';
+import 'package:yk_networking/yk_networking_request.dart';
+import 'package:yk_networking/yk_base_networking.dart';
 
-export 'package:yknetworking/yknetworkingconfig.dart';
-export 'package:yknetworking/yknetworkingResponse.dart';
-export 'package:yknetworking/yknetworkingRequest.dart';
+export 'package:yk_networking/yk_networking_config.dart';
+export 'package:yk_networking/yk_networking_response.dart';
+export 'package:yk_networking/yk_networking_request.dart';
 
 
 class YKNetworking {

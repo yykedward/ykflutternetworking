@@ -1,5 +1,5 @@
 
-import 'package:yknetworking/yknetworking.dart';
+import 'package:yk_networking/yk_networking.dart';
 
 void main() {
 
