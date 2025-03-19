@@ -1,9 +1,5 @@
 name: yknetworking
-description: "
-
-
-
-"
+description: "yknetworking."
 version: 0.1.0
 homepage: https://github.com/541278903/ykflutternetworking
 repository: https://github.com/541278903/ykflutternetworking
