@@ -2,9 +2,9 @@ library yk_networking;
 
 class YKNetworkingResponse {
 
-  dynamic? data;
+  dynamic data;
 
   Exception? exception;
 
-  YKNetworkingResponse({this.data = null, this.exception = null});
+  YKNetworkingResponse({this.data, this.exception});
 }

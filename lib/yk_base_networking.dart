@@ -20,7 +20,7 @@ class YKBaseNetworking {
     }
 
     try {
-      Response? response = null;
+      Response? response;
       if (request.method == YKNetworkingMethod.get) {
         response = await dio.get(
             request.path,
@@ -125,7 +125,7 @@ class YKBaseNetworking {
       request.showloadingCallBack!(true);
     }
     try {
-      Response? response = null;
+      Response? response;
 
       FormData formData = FormData.fromMap({});
       if (request.params != null) {
@@ -203,7 +203,7 @@ class YKBaseNetworking {
       request.showloadingCallBack!(true);
     }
     try {
-      Response? response = null;
+      Response? response;
 
       if (request.downloadPath != null) {
         response = await dio.download(
