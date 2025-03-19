@@ -1,11 +1,19 @@
 library yknetworking;
 
 import 'package:yknetworking/yknetworkingResponse.dart';
+import 'package:dio/dio.dart';
 
 enum YKNetworkingMethod {
   get,
   post,
   put,
+}
+
+enum YKNetworkingContentType {
+  application_x_ww_form_urlencoded,
+  application_json,
+  text_plain,
+  multipart_form_data,
 }
 
 
@@ -15,11 +23,14 @@ class YKNetworkingRequest {
   String path;
   final YKNetworkingMethod method;
 
+  YKNetworkingContentType? contentType;
+
   //===upload
   String? fileLocalPath;
   String fileName = "";
   String fileMiniType = "";
   String formName = "";
+
 
   //===download
   String? downloadPath;
@@ -35,6 +46,23 @@ class YKNetworkingRequest {
       methodStr = "PUT";
     }
     return methodStr;
+  }
+
+  String? contentTypeStr() {
+
+    String? type = null;
+
+    if (this.contentType == YKNetworkingContentType.application_x_ww_form_urlencoded) {
+      type = Headers.formUrlEncodedContentType;
+    } else if (this.contentType == YKNetworkingContentType.application_json) {
+      type = Headers.jsonContentType;
+    } else if (this.contentType == YKNetworkingContentType.text_plain) {
+      type = Headers.textPlainContentType;
+    } else if (this.contentType == YKNetworkingContentType.multipart_form_data) {
+      type = Headers.multipartFormDataContentType;
+    }
+
+    return type;
   }
 
   Map<String, dynamic>? commheader;
