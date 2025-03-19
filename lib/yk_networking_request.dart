@@ -1,6 +1,6 @@
 library yk_networking;
 
-import 'package:yk_networking/yk_networking_response.dart';
+import 'package:yknetworking/yk_networking_response.dart';
 import 'package:dio/dio.dart';
 
 enum YKNetworkingMethod {
@@ -10,10 +10,10 @@ enum YKNetworkingMethod {
 }
 
 enum YKNetworkingContentType {
-  application_x_ww_form_urlencoded,
-  application_json,
-  text_plain,
-  multipart_form_data,
+  applicationXWwFormUrlencoded,
+  applicationJson,
+  textPlain,
+  multipartFormData,
 }
 
 
@@ -52,13 +52,13 @@ class YKNetworkingRequest {
 
     String? type = null;
 
-    if (this.contentType == YKNetworkingContentType.application_x_ww_form_urlencoded) {
+    if (this.contentType == YKNetworkingContentType.applicationXWwFormUrlencoded) {
       type = Headers.formUrlEncodedContentType;
-    } else if (this.contentType == YKNetworkingContentType.application_json) {
+    } else if (this.contentType == YKNetworkingContentType.applicationJson) {
       type = Headers.jsonContentType;
-    } else if (this.contentType == YKNetworkingContentType.text_plain) {
+    } else if (this.contentType == YKNetworkingContentType.textPlain) {
       type = Headers.textPlainContentType;
-    } else if (this.contentType == YKNetworkingContentType.multipart_form_data) {
+    } else if (this.contentType == YKNetworkingContentType.multipartFormData) {
       type = Headers.multipartFormDataContentType;
     }
 
@@ -70,8 +70,8 @@ class YKNetworkingRequest {
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
   Function(YKNetworkingRequest request, Exception ex)? errorCallBack;
   Function(int count, int total)? progressCallBack;
-  Function(bool show)? showloadingCallBack;
-  bool showloading = false;
+  Function(bool show)? showLoadingCallBack;
+  bool showLoading = false;
 
   YKNetworkingRequest({
     this.baseUrl = "",
@@ -82,8 +82,8 @@ class YKNetworkingRequest {
     this.handleData,
     this.errorCallBack,
     this.progressCallBack,
-    this.showloading = false,
-    this.showloadingCallBack,
+    this.showLoading = false,
+    this.showLoadingCallBack,
   });
 
   upload(String? fileLocalPath,

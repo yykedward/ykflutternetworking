@@ -1,13 +1,13 @@
-library yk_networking;
+library yknetworking;
 
-import 'package:yk_networking/yk_networking_config.dart';
-import 'package:yk_networking/yk_networking_response.dart';
-import 'package:yk_networking/yk_networking_request.dart';
-import 'package:yk_networking/yk_base_networking.dart';
+import 'package:yknetworking/yk_networking_config.dart';
+import 'package:yknetworking/yk_networking_response.dart';
+import 'package:yknetworking/yk_networking_request.dart';
+import 'package:yknetworking/yk_base_networking.dart';
 
-export 'package:yk_networking/yk_networking_config.dart';
-export 'package:yk_networking/yk_networking_response.dart';
-export 'package:yk_networking/yk_networking_request.dart';
+export 'package:yknetworking/yk_networking_config.dart';
+export 'package:yknetworking/yk_networking_response.dart';
+export 'package:yknetworking/yk_networking_request.dart';
 
 
 class YKNetworking {
@@ -21,10 +21,10 @@ class YKNetworking {
   Function(YKNetworkingRequest request, Exception ex)? errorCallBack;
   Map<String, dynamic>? commonHeader;
   Map<String, dynamic>? commonParams;
-  void Function(bool show)? showloadingCallBack;
+  void Function(bool show)? showLoadingCallBack;
   String? _baseUrl;
 
-  YKNetworking({String? baseUrl, this.commonHeader, this.commonParams, this.handleData, this.errorCallBack, this.showloadingCallBack}) {
+  YKNetworking({String? baseUrl, this.commonHeader, this.commonParams, this.handleData, this.errorCallBack, this.showLoadingCallBack}) {
     String url = YKNetworkingConfig
         .getInstance()
         .baseUrl;
@@ -39,10 +39,10 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
-    return await request(path, method: YKNetworkingMethod.get, params: params, header: header, showloading: showloading, contentType: contentType);
+    return await request(path, method: YKNetworkingMethod.get, params: params, header: header, showLoading: showLoading, contentType: contentType);
   }
 
   Future<YKNetworkingResponse> post(String path,
@@ -50,10 +50,10 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
-    return await request(path, method: YKNetworkingMethod.post, params: params, header: header, showloading: showloading, contentType: contentType);
+    return await request(path, method: YKNetworkingMethod.post, params: params, header: header, showLoading: showLoading, contentType: contentType);
   }
 
   Future<YKNetworkingResponse> request(String path,
@@ -62,11 +62,11 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
     return await YKBaseNetworking.request(
-        await _getRequest(method, path, header, params, progressCallBack, showloading: showloading, contentType: contentType));
+        await _getRequest(method, path, header, params, progressCallBack, showLoading: showLoading, contentType: contentType));
   }
 
   Future<YKNetworkingResponse> upload(String path,
@@ -78,7 +78,7 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
     return await YKBaseNetworking.upload(await _uploadRequet(
@@ -90,7 +90,7 @@ class YKNetworking {
         params: params,
         header: header,
         progressCallBack: progressCallBack,
-        showloading: showloading,
+        showLoading: showLoading,
         contentType: contentType
     ));
   }
@@ -101,7 +101,7 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
     return await YKBaseNetworking.download(await _downloadRequest(url,
@@ -109,7 +109,7 @@ class YKNetworking {
         params: params,
         header: header,
         progressCallBack: progressCallBack,
-        showloading: showloading,
+        showLoading: showLoading,
         contentType: contentType
     ));
   }
@@ -120,23 +120,23 @@ class YKNetworking {
       Map<String, dynamic>? params,
       Function(int count, int total)? progressCallBack,
       {
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
-    YKNetworkingRequest _request = YKNetworkingRequest(
+    YKNetworkingRequest request = YKNetworkingRequest(
       baseUrl: "$_baseUrl",
       path: path,
       method: method,
       handleData: handleData,
       errorCallBack: errorCallBack,
       progressCallBack: progressCallBack,
-      showloading: showloading,
-      showloadingCallBack: showloadingCallBack,
+      showLoading: showLoading,
+      showLoadingCallBack: showLoadingCallBack,
     );
 
     if (path.startsWith("http://") || path.startsWith("https://")) {
-      _request.baseUrl = path;
-      _request.path = "";
+      request.baseUrl = path;
+      request.path = "";
     }
 
     YKNetworkingConfig config = YKNetworkingConfig.getInstance();
@@ -149,7 +149,7 @@ class YKNetworking {
       commheader.addAll(header);
     }
     if (dynamicHeader != null) {
-      var dHeader = await dynamicHeader!(_request);
+      var dHeader = await dynamicHeader!(request);
       if (dHeader != null) {
         commheader.addAll(dHeader);
       }
@@ -164,16 +164,16 @@ class YKNetworking {
       commParams.addAll(params);
     }
     if (dynamicParams != null) {
-      var dParams = await dynamicParams!(_request);
+      var dParams = await dynamicParams!(request);
       if (dParams != null) {
         commParams.addAll(dParams);
       }
     }
-    _request.commheader = commheader;
-    _request.params = commParams;
-    _request.contentType = contentType;
+    request.commheader = commheader;
+    request.params = commParams;
+    request.contentType = contentType;
 
-    return _request;
+    return request;
   }
 
   Future<YKNetworkingRequest> _uploadRequet(String path,
@@ -185,7 +185,7 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
     YKNetworkingRequest _request = await _getRequest(
@@ -194,7 +194,7 @@ class YKNetworking {
         header,
         params,
         progressCallBack,
-        showloading: showloading
+        showLoading: showLoading
     );
     _request.upload(fileLocalPath, fileName, fileMiniType, formName);
     _request.contentType = contentType;
@@ -208,7 +208,7 @@ class YKNetworking {
         Map<String, dynamic>? params,
         Map<String, dynamic>? header,
         Function(int count, int total)? progressCallBack,
-        bool showloading = false,
+        bool showLoading = false,
         YKNetworkingContentType? contentType,
       }) async {
     YKNetworkingRequest _request = await _getRequest(
@@ -217,7 +217,7 @@ class YKNetworking {
         header,
         params,
         progressCallBack,
-        showloading: showloading
+        showLoading: showLoading
     );
     _request.download(downloadPath);
     _request.contentType = contentType;

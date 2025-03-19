@@ -1,9 +1,9 @@
-library yk_networking;
+library yknetworking;
 
 import 'package:dio/dio.dart';
-import 'package:yk_networking/yk_networking_config.dart';
-import 'package:yk_networking/yk_networking_request.dart';
-import 'package:yk_networking/yk_networking_response.dart';
+import 'package:yknetworking/yk_networking_config.dart';
+import 'package:yknetworking/yk_networking_request.dart';
+import 'package:yknetworking/yk_networking_response.dart';
 
 class YKBaseNetworking {
 
@@ -15,8 +15,8 @@ class YKBaseNetworking {
     dio.options.baseUrl = request.baseUrl;
     dio.options.queryParameters = {};
     dio.options.headers = {};
-    if (request.showloadingCallBack != null && request.showloading) {
-      request.showloadingCallBack!(true);
+    if (request.showLoadingCallBack != null && request.showLoading) {
+      request.showLoadingCallBack!(true);
     }
 
     try {
@@ -94,8 +94,8 @@ class YKBaseNetworking {
         }
       }
       YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
-      if (request.showloadingCallBack != null && request.showloading) {
-        request.showloadingCallBack!(false);
+      if (request.showLoadingCallBack != null && request.showLoading) {
+        request.showLoadingCallBack!(false);
       }
       return resp;
     } on Exception catch (e) {
@@ -106,8 +106,8 @@ class YKBaseNetworking {
         request.errorCallBack!(request, newE);
       }
       YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
-      if (request.showloadingCallBack != null && request.showloading) {
-        request.showloadingCallBack!(false);
+      if (request.showLoadingCallBack != null && request.showLoading) {
+        request.showLoadingCallBack!(false);
       }
       return resp;
     }
@@ -121,8 +121,8 @@ class YKBaseNetworking {
     dio.options.baseUrl = request.baseUrl;
     dio.options.queryParameters = {};
     dio.options.headers = {};
-    if (request.showloadingCallBack != null && request.showloading) {
-      request.showloadingCallBack!(true);
+    if (request.showLoadingCallBack != null && request.showLoading) {
+      request.showLoadingCallBack!(true);
     }
     try {
       Response? response;
@@ -172,8 +172,8 @@ class YKBaseNetworking {
         }
       }
       YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
-      if (request.showloadingCallBack != null && request.showloading) {
-        request.showloadingCallBack!(false);
+      if (request.showLoadingCallBack != null && request.showLoading) {
+        request.showLoadingCallBack!(false);
       }
       return resp;
     } on Exception catch (e) {
@@ -184,8 +184,8 @@ class YKBaseNetworking {
         request.errorCallBack!(request, newE);
       }
       YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
-      if (request.showloadingCallBack != null && request.showloading) {
-        request.showloadingCallBack!(false);
+      if (request.showLoadingCallBack != null && request.showLoading) {
+        request.showLoadingCallBack!(false);
       }
       return resp;
     }
@@ -199,8 +199,8 @@ class YKBaseNetworking {
     dio.options.baseUrl = request.baseUrl;
     dio.options.queryParameters = {};
     dio.options.headers = {};
-    if (request.showloadingCallBack != null && request.showloading) {
-      request.showloadingCallBack!(true);
+    if (request.showLoadingCallBack != null && request.showLoading) {
+      request.showLoadingCallBack!(true);
     }
     try {
       Response? response;
@@ -239,8 +239,8 @@ class YKBaseNetworking {
       YKNetworkingResponse resp = YKNetworkingResponse(data: response.data);
 
       YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
-      if (request.showloadingCallBack != null && request.showloading) {
-        request.showloadingCallBack!(false);
+      if (request.showLoadingCallBack != null && request.showLoading) {
+        request.showLoadingCallBack!(false);
       }
       return resp;
     } on Exception catch (e) {
@@ -251,8 +251,8 @@ class YKBaseNetworking {
         request.errorCallBack!(request, newE);
       }
       YKNetworkingConfig.getInstance().cacheRequest?.call(request, resp);
-      if (request.showloadingCallBack != null && request.showloading) {
-        request.showloadingCallBack!(false);
+      if (request.showLoadingCallBack != null && request.showLoading) {
+        request.showLoadingCallBack!(false);
       }
       return resp;
     }
