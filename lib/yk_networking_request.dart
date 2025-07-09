@@ -10,6 +10,7 @@ enum YKNetworkingMethod {
 }
 
 enum YKNetworkingContentType {
+
   applicationXWwFormUrlencoded,
   applicationJson,
   textPlain,
@@ -48,23 +49,6 @@ class YKNetworkingRequest {
     return methodStr;
   }
 
-  String? contentTypeStr() {
-
-    String? type = null;
-
-    if (this.contentType == YKNetworkingContentType.applicationXWwFormUrlencoded) {
-      type = Headers.formUrlEncodedContentType;
-    } else if (this.contentType == YKNetworkingContentType.applicationJson) {
-      type = Headers.jsonContentType;
-    } else if (this.contentType == YKNetworkingContentType.textPlain) {
-      type = Headers.textPlainContentType;
-    } else if (this.contentType == YKNetworkingContentType.multipartFormData) {
-      type = Headers.multipartFormDataContentType;
-    }
-
-    return type;
-  }
-
   Map<String, dynamic>? commheader;
   Map<String, dynamic>? params;
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
@@ -98,5 +82,24 @@ class YKNetworkingRequest {
 
   download(String? downoadPath) {
     this.downloadPath = downoadPath;
+  }
+}
+
+extension YKNetworkingContentTypeExtension on YKNetworkingContentType {
+
+  String value() {
+
+    switch (this) {
+      case YKNetworkingContentType.textPlain:
+        return Headers.textPlainContentType;
+      case YKNetworkingContentType.applicationXWwFormUrlencoded:
+        return Headers.formUrlEncodedContentType;
+      case YKNetworkingContentType.multipartFormData:
+        return Headers.multipartFormDataContentType;
+      case YKNetworkingContentType.applicationJson:
+        return Headers.jsonContentType;
+      default:
+        return "";
+    }
   }
 }

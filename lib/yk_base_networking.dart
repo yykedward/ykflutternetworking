@@ -33,7 +33,7 @@ class YKBaseNetworking {
                     .getInstance()
                     .receiveTimeout),
                 headers: request.commheader,
-                contentType: request.contentTypeStr()
+                contentType: request.contentType?.value()
             ),
             onReceiveProgress: (count, total) {
               if (request.progressCallBack != null) {
@@ -53,7 +53,6 @@ class YKBaseNetworking {
                     .getInstance()
                     .receiveTimeout),
                 headers: request.commheader,
-                contentType: request.contentTypeStr(),
             ),
             onReceiveProgress: (count, total) {
               if (request.progressCallBack != null) {
