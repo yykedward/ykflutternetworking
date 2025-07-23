@@ -38,6 +38,7 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
     return await request(
       path,
@@ -48,6 +49,7 @@ class YKNetworking {
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
       contentType: contentType,
+      disableHandleData: disableHandleData,
     );
   }
 
@@ -60,15 +62,19 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
-    return await request(path,
-        method: YKNetworkingMethod.post,
-        params: params,
-        header: header,
-        showLoading: showLoading,
-        disableDynamicHeader: disableDynamicHeader,
-        disableDynamicParams: disableDynamicParams,
-        contentType: contentType);
+    return await request(
+      path,
+      method: YKNetworkingMethod.post,
+      params: params,
+      header: header,
+      showLoading: showLoading,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
+      contentType: contentType,
+      disableHandleData: disableHandleData,
+    );
   }
 
   Future<YKNetworkingResponse> request(
@@ -81,6 +87,7 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
     return await YKBaseNetworking.request(await _getRequest(
       method,
@@ -92,6 +99,7 @@ class YKNetworking {
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
       contentType: contentType,
+      disableHandleData: disableHandleData,
     ));
   }
 
@@ -108,6 +116,7 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
     return await YKBaseNetworking.upload(await _uploadRequest(
       path,
@@ -122,12 +131,13 @@ class YKNetworking {
       contentType: contentType,
       disableDynamicParams: disableDynamicParams,
       disableDynamicHeader: disableDynamicHeader,
+      disableHandleData: disableHandleData,
     ));
   }
 
   Future<YKNetworkingResponse> download(
     String url, {
-    String? downloadPath = null,
+    String? downloadPath,
     Map<String, dynamic>? params,
     Map<String, dynamic>? header,
     Function(int count, int total)? progressCallBack,
@@ -135,6 +145,7 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
     return await YKBaseNetworking.download(await _downloadRequest(
       url,
@@ -146,6 +157,7 @@ class YKNetworking {
       contentType: contentType,
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
+      disableHandleData: disableHandleData,
     ));
   }
 
@@ -159,12 +171,13 @@ class YKNetworking {
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
     YKNetworkingContentType? contentType,
+    bool disableHandleData = false,
   }) async {
     YKNetworkingRequest request = YKNetworkingRequest(
       baseUrl: "$_baseUrl",
       path: path,
       method: method,
-      handleData: handleData,
+      handleData: (disableHandleData) ? null : handleData,
       errorCallBack: errorCallBack,
       progressCallBack: progressCallBack,
       showLoading: showLoading,
@@ -228,6 +241,7 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
     YKNetworkingRequest request = await _getRequest(
       YKNetworkingMethod.post,
@@ -238,6 +252,7 @@ class YKNetworking {
       showLoading: showLoading,
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
+      disableHandleData: disableHandleData,
     );
     request.upload(fileLocalPath, fileName, fileMiniType, formName);
     request.contentType = contentType;
@@ -255,6 +270,7 @@ class YKNetworking {
     YKNetworkingContentType? contentType,
     bool disableDynamicHeader = false,
     bool disableDynamicParams = false,
+    bool disableHandleData = false,
   }) async {
     YKNetworkingRequest request = await _getRequest(
       YKNetworkingMethod.get,
@@ -265,6 +281,7 @@ class YKNetworking {
       showLoading: showLoading,
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
+      disableHandleData: disableHandleData,
     );
     request.download(downloadPath);
     request.contentType = contentType;

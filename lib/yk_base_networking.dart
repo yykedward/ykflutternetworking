@@ -36,9 +36,7 @@ class YKBaseNetworking {
                 contentType: request.contentType?.value()
             ),
             onReceiveProgress: (count, total) {
-              if (request.progressCallBack != null) {
-                request.progressCallBack!(count, total);
-              }
+              request.progressCallBack?.call(count, total);
             }
         );
       } else if (request.method == YKNetworkingMethod.post) {
@@ -53,11 +51,10 @@ class YKBaseNetworking {
                     .getInstance()
                     .receiveTimeout),
                 headers: request.commheader,
+                contentType: request.contentType?.value()
             ),
             onReceiveProgress: (count, total) {
-              if (request.progressCallBack != null) {
-                request.progressCallBack!(count, total);
-              }
+              request.progressCallBack?.call(count, total);
             }
         );
       } else if (request.method == YKNetworkingMethod.put) {
@@ -74,9 +71,7 @@ class YKBaseNetworking {
                 headers: request.commheader
             ),
             onSendProgress: (count, total) {
-              if (request.progressCallBack != null) {
-                request.progressCallBack!(count, total);
-              }
+              request.progressCallBack?.call(count, total);
             }
         );
       }

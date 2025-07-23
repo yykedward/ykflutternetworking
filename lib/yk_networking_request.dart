@@ -36,18 +36,6 @@ class YKNetworkingRequest {
   //===download
   String? downloadPath;
 
-  String methodStr() {
-    var methodStr = "GET";
-
-    if (this.method == YKNetworkingMethod.get) {
-      methodStr = "GET";
-    } else if (this.method == YKNetworkingMethod.post) {
-      methodStr = "POST";
-    } else if (this.method == YKNetworkingMethod.put) {
-      methodStr = "PUT";
-    }
-    return methodStr;
-  }
 
   Map<String, dynamic>? commheader;
   Map<String, dynamic>? params;
@@ -86,6 +74,22 @@ class YKNetworkingRequest {
 
   download(String? downloadPath) {
     this.downloadPath = downloadPath;
+  }
+}
+
+extension YKNetworkingMethodExtension on YKNetworkingMethod {
+
+  String value() {
+    switch (this) {
+      case YKNetworkingMethod.get:
+        return "GET";
+      case YKNetworkingMethod.post:
+        return "POST";
+      case YKNetworkingMethod.put:
+        return "PUT";
+      default:
+        return "";
+    }
   }
 }
 

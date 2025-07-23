@@ -8,6 +8,8 @@ See the [Migration Guide][] for the complete breaking changes list.**
 - fix bug
 - add disableDynamicHeader
 - add disableDynamicParams
+- add disableHandleData
+
 ## 0.1.0
 - add context-Type
 - fix bug
