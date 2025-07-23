@@ -56,6 +56,8 @@ class YKNetworkingRequest {
   Function(int count, int total)? progressCallBack;
   Function(bool show)? showLoadingCallBack;
   bool showLoading = false;
+  bool disableDynamicHeader = false;
+  bool disableDynamicParams = false;
 
   YKNetworkingRequest({
     this.baseUrl = "",
@@ -68,6 +70,8 @@ class YKNetworkingRequest {
     this.progressCallBack,
     this.showLoading = false,
     this.showLoadingCallBack,
+    this.disableDynamicHeader = false,
+    this.disableDynamicParams = false,
   });
 
   upload(String? fileLocalPath,
@@ -80,8 +84,8 @@ class YKNetworkingRequest {
     this.formName = formName;
   }
 
-  download(String? downoadPath) {
-    this.downloadPath = downoadPath;
+  download(String? downloadPath) {
+    this.downloadPath = downloadPath;
   }
 }
 

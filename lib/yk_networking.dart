@@ -9,11 +9,8 @@ export 'package:yknetworking/yk_networking_config.dart';
 export 'package:yknetworking/yk_networking_response.dart';
 export 'package:yknetworking/yk_networking_request.dart';
 
-
 class YKNetworking {
-
   Exception? Function(YKNetworkingRequest request, YKNetworkingResponse response)? handleData;
-
 
   Future<Map<String, dynamic>?> Function(YKNetworkingRequest request)? dynamicHeader; //每次请求都会动态添加到头部中
   Future<Map<String, dynamic>?> Function(YKNetworkingRequest request)? dynamicParams; //每次请求都会动态添加到参数中
@@ -25,104 +22,144 @@ class YKNetworking {
   String? _baseUrl;
 
   YKNetworking({String? baseUrl, this.commonHeader, this.commonParams, this.handleData, this.errorCallBack, this.showLoadingCallBack}) {
-    String url = YKNetworkingConfig
-        .getInstance()
-        .baseUrl;
+    String url = YKNetworkingConfig.getInstance().baseUrl;
     if (baseUrl != null) {
       url = baseUrl;
     }
     _baseUrl = url;
   }
 
-  Future<YKNetworkingResponse> get(String path,
-      {
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    return await request(path, method: YKNetworkingMethod.get, params: params, header: header, showLoading: showLoading, contentType: contentType);
+  Future<YKNetworkingResponse> get(
+    String path, {
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    return await request(
+      path,
+      method: YKNetworkingMethod.get,
+      params: params,
+      header: header,
+      showLoading: showLoading,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
+      contentType: contentType,
+    );
   }
 
-  Future<YKNetworkingResponse> post(String path,
-      {
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    return await request(path, method: YKNetworkingMethod.post, params: params, header: header, showLoading: showLoading, contentType: contentType);
-  }
-
-  Future<YKNetworkingResponse> request(String path,
-      {
-        YKNetworkingMethod method = YKNetworkingMethod.get,
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    return await YKBaseNetworking.request(
-        await _getRequest(method, path, header, params, progressCallBack, showLoading: showLoading, contentType: contentType));
-  }
-
-  Future<YKNetworkingResponse> upload(String path,
-      String? fileLocalPath,
-      String fileName,
-      String fileMiniType,
-      String formName,
-      {
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    return await YKBaseNetworking.upload(await _uploadRequet(
-        path,
-        fileLocalPath,
-        fileName,
-        fileMiniType,
-        formName,
+  Future<YKNetworkingResponse> post(
+    String path, {
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    return await request(path,
+        method: YKNetworkingMethod.post,
         params: params,
         header: header,
-        progressCallBack: progressCallBack,
         showLoading: showLoading,
-        contentType: contentType
+        disableDynamicHeader: disableDynamicHeader,
+        disableDynamicParams: disableDynamicParams,
+        contentType: contentType);
+  }
+
+  Future<YKNetworkingResponse> request(
+    String path, {
+    YKNetworkingMethod method = YKNetworkingMethod.get,
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    return await YKBaseNetworking.request(await _getRequest(
+      method,
+      path,
+      header,
+      params,
+      progressCallBack,
+      showLoading: showLoading,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
+      contentType: contentType,
     ));
   }
 
-  Future<YKNetworkingResponse> download(String url,
-      {
-        String? downloadPath = null,
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    return await YKBaseNetworking.download(await _downloadRequest(url,
-        downloadPath: downloadPath,
-        params: params,
-        header: header,
-        progressCallBack: progressCallBack,
-        showLoading: showLoading,
-        contentType: contentType
+  Future<YKNetworkingResponse> upload(
+    String path,
+    String? fileLocalPath,
+    String fileName,
+    String fileMiniType,
+    String formName, {
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    return await YKBaseNetworking.upload(await _uploadRequest(
+      path,
+      fileLocalPath,
+      fileName,
+      fileMiniType,
+      formName,
+      params: params,
+      header: header,
+      progressCallBack: progressCallBack,
+      showLoading: showLoading,
+      contentType: contentType,
+      disableDynamicParams: disableDynamicParams,
+      disableDynamicHeader: disableDynamicHeader,
     ));
   }
 
-  Future<YKNetworkingRequest> _getRequest(YKNetworkingMethod method,
-      String path,
-      Map<String, dynamic>? header,
-      Map<String, dynamic>? params,
-      Function(int count, int total)? progressCallBack,
-      {
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
+  Future<YKNetworkingResponse> download(
+    String url, {
+    String? downloadPath = null,
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    return await YKBaseNetworking.download(await _downloadRequest(
+      url,
+      downloadPath: downloadPath,
+      params: params,
+      header: header,
+      progressCallBack: progressCallBack,
+      showLoading: showLoading,
+      contentType: contentType,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
+    ));
+  }
+
+  Future<YKNetworkingRequest> _getRequest(
+    YKNetworkingMethod method,
+    String path,
+    Map<String, dynamic>? header,
+    Map<String, dynamic>? params,
+    Function(int count, int total)? progressCallBack, {
+    bool showLoading = false,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+    YKNetworkingContentType? contentType,
+  }) async {
     YKNetworkingRequest request = YKNetworkingRequest(
       baseUrl: "$_baseUrl",
       path: path,
@@ -132,6 +169,8 @@ class YKNetworking {
       progressCallBack: progressCallBack,
       showLoading: showLoading,
       showLoadingCallBack: showLoadingCallBack,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
     );
 
     if (path.startsWith("http://") || path.startsWith("https://")) {
@@ -148,7 +187,7 @@ class YKNetworking {
     if (header != null) {
       commheader.addAll(header);
     }
-    if (dynamicHeader != null) {
+    if (request.disableDynamicHeader == false && dynamicHeader != null) {
       var dHeader = await dynamicHeader!(request);
       if (dHeader != null) {
         commheader.addAll(dHeader);
@@ -163,7 +202,7 @@ class YKNetworking {
     if (params != null) {
       commParams.addAll(params);
     }
-    if (dynamicParams != null) {
+    if (request.disableDynamicParams == false && dynamicParams != null) {
       var dParams = await dynamicParams!(request);
       if (dParams != null) {
         commParams.addAll(dParams);
@@ -176,53 +215,60 @@ class YKNetworking {
     return request;
   }
 
-  Future<YKNetworkingRequest> _uploadRequet(String path,
-      String? fileLocalPath,
-      String fileName,
-      String fileMiniType,
-      String formName,
-      {
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    YKNetworkingRequest _request = await _getRequest(
-        YKNetworkingMethod.post,
-        path,
-        header,
-        params,
-        progressCallBack,
-        showLoading: showLoading
+  Future<YKNetworkingRequest> _uploadRequest(
+    String path,
+    String? fileLocalPath,
+    String fileName,
+    String fileMiniType,
+    String formName, {
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    YKNetworkingRequest request = await _getRequest(
+      YKNetworkingMethod.post,
+      path,
+      header,
+      params,
+      progressCallBack,
+      showLoading: showLoading,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
     );
-    _request.upload(fileLocalPath, fileName, fileMiniType, formName);
-    _request.contentType = contentType;
+    request.upload(fileLocalPath, fileName, fileMiniType, formName);
+    request.contentType = contentType;
 
-    return _request;
+    return request;
   }
 
-  Future<YKNetworkingRequest> _downloadRequest(String url,
-      {
-        String? downloadPath,
-        Map<String, dynamic>? params,
-        Map<String, dynamic>? header,
-        Function(int count, int total)? progressCallBack,
-        bool showLoading = false,
-        YKNetworkingContentType? contentType,
-      }) async {
-    YKNetworkingRequest _request = await _getRequest(
-        YKNetworkingMethod.get,
-        url,
-        header,
-        params,
-        progressCallBack,
-        showLoading: showLoading
+  Future<YKNetworkingRequest> _downloadRequest(
+    String url, {
+    String? downloadPath,
+    Map<String, dynamic>? params,
+    Map<String, dynamic>? header,
+    Function(int count, int total)? progressCallBack,
+    bool showLoading = false,
+    YKNetworkingContentType? contentType,
+    bool disableDynamicHeader = false,
+    bool disableDynamicParams = false,
+  }) async {
+    YKNetworkingRequest request = await _getRequest(
+      YKNetworkingMethod.get,
+      url,
+      header,
+      params,
+      progressCallBack,
+      showLoading: showLoading,
+      disableDynamicHeader: disableDynamicHeader,
+      disableDynamicParams: disableDynamicParams,
     );
-    _request.download(downloadPath);
-    _request.contentType = contentType;
+    request.download(downloadPath);
+    request.contentType = contentType;
 
-    return _request;
+    return request;
   }
-
 }

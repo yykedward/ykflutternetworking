@@ -6,8 +6,8 @@ See the [Migration Guide][] for the complete breaking changes list.**
 ## 0.1.1
 - fix context-Type
 - fix bug
-
-
+- add disableDynamicHeader
+- add disableDynamicParams
 ## 0.1.0
 - add context-Type
 - fix bug
