@@ -20,8 +20,17 @@ class YKNetworking {
   Map<String, dynamic>? commonParams;
   void Function(bool show)? showLoadingCallBack;
   String? _baseUrl;
+  final YKNetworkingContentType contentType;
 
-  YKNetworking({String? baseUrl, this.commonHeader, this.commonParams, this.handleData, this.errorCallBack, this.showLoadingCallBack}) {
+  YKNetworking({
+    String? baseUrl,
+    this.commonHeader,
+    this.commonParams,
+    this.handleData,
+    this.errorCallBack,
+    this.showLoadingCallBack,
+    this.contentType = YKNetworkingContentType.applicationJson,
+  }) {
     String url = YKNetworkingConfig.getInstance().baseUrl;
     if (baseUrl != null) {
       url = baseUrl;
@@ -98,7 +107,7 @@ class YKNetworking {
       showLoading: showLoading,
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
-      contentType: contentType,
+      contentType: contentType ?? this.contentType,
       disableHandleData: disableHandleData,
     ));
   }
@@ -128,7 +137,7 @@ class YKNetworking {
       header: header,
       progressCallBack: progressCallBack,
       showLoading: showLoading,
-      contentType: contentType,
+      contentType: contentType ?? this.contentType,
       disableDynamicParams: disableDynamicParams,
       disableDynamicHeader: disableDynamicHeader,
       disableHandleData: disableHandleData,
@@ -154,7 +163,7 @@ class YKNetworking {
       header: header,
       progressCallBack: progressCallBack,
       showLoading: showLoading,
-      contentType: contentType,
+      contentType: contentType ?? this.contentType,
       disableDynamicHeader: disableDynamicHeader,
       disableDynamicParams: disableDynamicParams,
       disableHandleData: disableHandleData,
